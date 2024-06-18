@@ -34,7 +34,7 @@ class FollowRequest < ApplicationRecord
   # end
 
   # FollowRequest#recipient: returns a row from the users table associated to this follow request by the recipient_id column
-  belongs_to(:recipient, class_name: "User", foreign_key: "recipient_id"
+  belongs_to(:recipient, class_name: "User", foreign_key: "recipient_id")
 
   # def recipient
   #   my_recipient_id = self.recipient_id
