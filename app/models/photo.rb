@@ -20,40 +20,42 @@ class Photo < ApplicationRecord
   ## Direct associations
 
   # Photo#poster: returns a row from the users table associated to this photo by the owner_id column
+  belongs_to(:poster, class_name: "User", foreign_key: "owner_id")
+
+  # def poster
+  #   my_owner_id = self.owner_id
+
+  #   matching_users = User.where({ :id => my_owner_id })
+
+  #   the_user = matching_users.at(0)
+
+  #   return the_user
+  # end
 
   # Photo#comments: returns rows from the comments table associated to this photo by the photo_id column
+  has_many(:comments, class_name: "Comment", foreign_key: "photo_id")
+
+  # def comments
+  #   my_id = self.id
+
+  #   matching_comments = Comment.where({ :photo_id => self.id })
+
+  #   return matching_comments
+  # end
 
   # Photo#likes: returns rows from the likes table associated to this photo by the photo_id column
+  has_many(:likes, class_name: "Like", foreign_key: "photo_id")
 
+  # def likes
+  #   my_id = self.id
+
+  #   matching_likes = Like.where({ :photo_id => self.id })
+
+  #   return matching_likes
+  # end
   ## Indirect associations
 
   # Photo#fans: returns rows from the users table associated to this photo through its likes
-
-  def poster
-    my_owner_id = self.owner_id
-
-    matching_users = User.where({ :id => my_owner_id })
-
-    the_user = matching_users.at(0)
-
-    return the_user
-  end
-
-  def comments
-    my_id = self.id
-
-    matching_comments = Comment.where({ :photo_id => self.id })
-
-    return matching_comments
-  end
-
-  def likes
-    my_id = self.id
-
-    matching_likes = Like.where({ :photo_id => self.id })
-
-    return matching_likes
-  end
 
   def fans
     my_likes = self.likes
@@ -68,6 +70,9 @@ class Photo < ApplicationRecord
 
     return matching_users
   end
+
+
+
 
   def fan_list
     my_fans = self.fans
