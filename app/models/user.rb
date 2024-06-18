@@ -22,7 +22,7 @@ class User < ApplicationRecord
   ## Direct associations
 
   # User#comments: returns rows from the comments table associated to this user by the author_id column
-  has_many(:comments, class_name: "Comment", foreign_key:"author_id")
+  has_many(:comments, class_name: "Comment", foreign_key: "author_id")
 
   
     # def comments
@@ -34,7 +34,7 @@ class User < ApplicationRecord
     # end
 
   # User#own_photos: returns rows from the photos table  associated to this user by the owner_id column
-  has_many(:photos, class_name: "Photo", foreign_key: "owner_id")
+  has_many(:own_photos, class_name: "Photo", foreign_key: "owner_id")
 
   # def own_photos
   #   my_id = self.id
@@ -100,23 +100,24 @@ class User < ApplicationRecord
   ## Indirect associations
   
   # User#liked_photos: returns rows from the photos table associated to this user through its likes
+  has_many(:liked_photos, through: :likes, source: :photo)
   
-  def liked_photos
-    my_likes = self.likes
+  # def liked_photos
+  #   my_likes = self.likes
     
-    array_of_photo_ids = Array.new
+  #   array_of_photo_ids = Array.new
 
-    my_likes.each do |a_like|
-      array_of_photo_ids.push(a_like.photo_id)
-    end
+  #   my_likes.each do |a_like|
+  #     array_of_photo_ids.push(a_like.photo_id)
+  #   end
 
-    matching_photos = Photo.where({ :id => array_of_photo_ids })
+  #   matching_photos = Photo.where({ :id => array_of_photo_ids })
 
-    return matching_photos
-  end
+  #   return matching_photos
+  # end
   # User#commented_photos: returns rows from the photos table associated to this user through its comments
-
-
+  has_many(:commented_photos, through: :comments, source: :photo)
+  
   def commented_photos
     my_comments = self.comments
     
